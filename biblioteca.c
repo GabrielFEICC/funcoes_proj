@@ -40,3 +40,22 @@ void criar_cliente(Cliente clientes[], int *num_clientes){
         printf("Maximo de cliente atingido\n");
     }
 }
+
+//funcao de apagar cliente
+void apagar_cliente(Cliente clientes[], int *num_clientes, const char *cpf) {
+    //comandos usados para apgar o clientes
+    int i;
+    for (i = 0; i < *num_clientes; i++) {
+        //usado para apagar o cliente atraves do cpf dele
+        if (strcmp(clientes[i].cpf, cpf) == 0) {
+            for (int j = i; j < (*num_clientes - 1); j++) {
+                clientes[j] = clientes [j + 1];
+            }
+            //cliente removido
+            (*num_clientes)--;
+            printf("Cliente apagado com sucesso\n", cpf);
+            return;
+        }
+    }//quando nao encontra o cpf no banco
+    printf("Cliente nao encontrado\n", cpf);
+}
