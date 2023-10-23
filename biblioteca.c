@@ -79,3 +79,65 @@ void listar_cliente(Cliente clientes[], int num_clientes) {
         printf("saldo: %.2f\n", clientes[i].saldo);
     }
 }
+
+//funcao de debito
+void debito(Cliente clientes[], int num_clientes, Operacao operacoes[], int *num_operacoes) {
+    //limite de caracteres para cada string, cpf e senha
+    char cpf[12];
+    char senha[20];
+    float valor;
+
+    printf("CPF: ");
+    scanf("%s", cpf);
+
+    int i;
+    for (i = 0; i < num_clientes; i++) {
+        //ira pedir a senha do cliente para fazer um debito
+        if (strcmp(clientes[i].cpf, cpf) == 0) {
+            printf("senha: ");
+            scanf("%s", senha);
+
+            //o cliente escolhera um valor a ser debitado
+            if (strcmp(&clientes[i].senha, &senha) == 0) {
+                printf("valor a ser debitado: ");
+                scanf("%f", &valor);
+
+                //caso a conta do cliente for comum, tera a taxa de 5%
+                if (strcmp(&clientes[i].tipo_de_conta, "comum") == 0) {
+                    if (clientes[i].saldo - valor >= -1000) {
+                        clientes[i].saldo -= valor * 1.05;
+                        printf("debitao realizado\n");
+                        strcpy(operacoes[*num_operacoes].cpf, cpf);
+                        strcpy(&operacoes[*num_operacoes].tipo_de_operacao, "debito");
+                        operacoes[*num_operacoes].valor = valor;
+                        (*num_operacoes)++;
+                    } else {
+                        printf("saldo insuficiente\n");
+                    }
+                    //caso a conta do cliente do plus, tera taxa de 3%
+                } else if (strcmp(&clientes[i].tipo_de_conta, "plus") == 0) {
+                    if (clientes[i].saldo - valor >= -5000) {
+                        clientes[i].saldo -= valor * 1.03;
+                        printf("debito realizado\n");
+                        strcpy(operacoes[*num_operacoes].cpf, cpf);
+                        strcpy(&operacoes[*num_operacoes].tipo_de_operacao, "debito");
+                        operacoes[*num_operacoes].valor = valor;
+                        (*num_operacoes)++;
+                    } else {
+                        //caso o cliente nao tenha saldo suficiente
+                        printf("saldo insuficiente\n");
+                    }
+                } else {
+                    //caso o tipo de conta estiver errado
+                    printf("tipo de conta nao aceita\n");
+                }
+            } else {
+                //caso o cliente tenha errado a senha
+                printf("senha errada\n");
+            }
+            return;
+        }
+        //caso o cliente erre o cpf
+        printf("cliente nao encontrado\n", cpf);
+    }
+}
