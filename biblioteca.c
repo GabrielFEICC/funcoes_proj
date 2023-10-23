@@ -176,3 +176,80 @@ void deposito(Cliente clientes[], int num_clientes, Operacao operacoes[], int *n
     //caso o cliente nao seja encontrado
     printf("cliente nao encontrado\n", cpf);
 }
+
+//funcao de transferir
+void transferir(Cliente clientes[], int num_clientes, Operacao operacoes[], int *num_operacoes){
+    //para limitar os caracteres da string de cpf de origem, senha de origem e cpf de destino
+    char cpf_de_origem[12];
+    char senha_de_origem[20];
+    char cpf_de_destino[12];
+    float valor;
+
+    printf("CPF de conta de origem: ");
+    scanf("%s", cpf_de_origem);
+
+    int i;
+    for (i = 0; i < num_clientes; i++) {
+        //para o cliente digitar a sua senha
+        if (strcmp(clientes[i].cpf, cpf_de_origem) == 0) {
+            printf("senha da conta de origem: ");
+            scanf("%s", senha_de_origem);
+
+            //para o cliente desejar o cpf do outro cliente que deseja enviar
+            if (strcmp(&clientes[i].senha, &senha_de_origem) == 0) {
+                printf("CPF da conta de destino: ");
+                scanf("%s", cpf_de_destino);
+
+                int j;
+                for (j = 0; j < num_clientes; j++) {
+                    //para colocar o valor que deseja transferir para o outro cliente
+                    if (strcmp(clientes[j].cpf, cpf_de_destino) == 0) {
+                        printf("valor que deseja transferir: ");
+                        scanf("%f", &valor);
+
+                        if (valor > 0) {
+                            //quando a transferencia for realizada com succeso
+                            if (strcmp(&clientes[i].tipo_de_conta, "comum") == 0 | strcmp(&clientes[i].tipo_de_conta, "plus") == 0) {
+                                if (clientes[i].saldo >= valor) {
+                                    clientes[i].saldo -= valor;
+                                    clientes[j].saldo += valor;
+                                    printf("transferencia realizada\n");
+
+                                    //quando o cliente da entrada na transferencia, digita o seu cpf e valor
+                                    strcpy(operacoes[*num_operacoes].cpf, cpf_de_origem);
+                                    strcpy(&operacoes[*num_operacoes].tipo_de_operacao, "transferencia (entrada)");
+                                    operacoes[*num_operacoes].valor = valor;
+                                    (*num_operacoes)++;
+
+                                    //quando o cliente recebe o dinheiro, acaba a transferencia
+                                    strcpy(operacoes[*num_operacoes].cpf, cpf_de_destino);
+                                    strcpy(&operacoes[*num_operacoes].tipo_de_operacao, "transferencia (saida)");
+                                    operacoes[*num_operacoes].valor = valor;
+                                    (*num_operacoes)++;
+                                }   else {
+                                    //quando o cliente nao tenha o saldo suficiente
+                                    printf("saldo insuficiente na conta\n");
+                                }
+                            }   else {
+                                //quando o cliente erra o tipo de conta
+                                printf("tipo de conta invalido\n");
+                            }
+                        } else {
+                            //quando digita um valor errado
+                            printf("valor de transferencia invalido\n");
+                        }
+                        return;
+                    }
+                }
+                //quando o cliente nao existe ou errou ao escrever o cpf do cliente
+                printf("conta nao encontrada\n");
+                return;
+            } else {
+                //quando erra a sua senha
+                printf("senha da conta errada\n");
+                return;
+            }
+        }
+    }
+
+}
