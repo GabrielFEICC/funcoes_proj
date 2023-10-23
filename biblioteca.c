@@ -141,3 +141,38 @@ void debito(Cliente clientes[], int num_clientes, Operacao operacoes[], int *num
         printf("cliente nao encontrado\n", cpf);
     }
 }
+
+//funcao de deposito
+void deposito(Cliente clientes[], int num_clientes, Operacao operacoes[], int *num_operacoes){
+    //limite de caracteres da string cpf
+    char cpf[12];
+    float valor;
+
+    printf("CPF: ");
+    scanf("%s", cpf);
+
+    int i;
+    for (i=0; i< num_clientes; i++){
+        //para debitar um valor para um cliente
+        if (strcmp(clientes[i].cpf, cpf)==0){
+            printf("valor a ser depositado: ");
+            scanf("%f",&valor);
+
+            if (valor > 0) {
+                //quando o valor debitado for maior que 0, sera debitado com sucesso
+                clientes[i]. saldo += valor;
+                printf("depositado com sucesso\n");
+                strcpy(operacoes[*num_operacoes].cpf,cpf);
+                strcpy(&operacoes[*num_operacoes].tipo_de_operacao,"deposito");
+                operacoes[*num_operacoes].valor=valor;
+                (*num_operacoes)++;
+            }else {
+                //caso menor que 0, deposito nao sera possivel
+                printf("deposito invalido\n");
+            }
+            return;
+        }
+    }
+    //caso o cliente nao seja encontrado
+    printf("cliente nao encontrado\n", cpf);
+}
