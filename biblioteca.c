@@ -59,3 +59,23 @@ void apagar_cliente(Cliente clientes[], int *num_clientes, const char *cpf) {
     }//quando nao encontra o cpf no banco
     printf("Cliente nao encontrado\n", cpf);
 }
+
+//funcao de listar o cliente
+void listar_cliente(Cliente clientes[], int num_clientes) {
+    //quando nao possui nenhum cliente cadastrado, ira retornar ao menu
+    if (num_clientes == 0) {
+        printf("nao possui cliente cadastrado\n");
+        return;
+    }//ira mostrar as listas do cliente cadastrados
+    printf("Lista de clientes: \n");
+    for (int i = 0; i < num_clientes; i++) {
+        //esse print ira mostrar o nome do cliente
+        printf("Nome: %s\n", clientes[i].nome);
+        //esse print ira mostrar o cpf do cliente
+        printf("CPF: %s\n", clientes[i].cpf);
+        //esse print ira mostrar o tipo de conta do cliente
+        printf("Tipo de conta: %s\n", clientes[i].tipo_de_conta);
+        //esse print ira mostrar o saldo do cliente
+        printf("saldo: %.2f\n", clientes[i].saldo);
+    }
+}
