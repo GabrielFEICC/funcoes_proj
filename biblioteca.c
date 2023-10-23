@@ -253,3 +253,44 @@ void transferir(Cliente clientes[], int num_clientes, Operacao operacoes[], int 
     }
 
 }
+
+//funcao de extrato
+void extrato(Cliente clientes[], int num_clientes, Operacao operacoes[], int num_operacoes){
+    //para limitar os caracteres da string, de senha e cpf
+    char cpf[12];
+    char senha[20];
+
+    printf("CPF: ");
+    scanf("%s", cpf);
+
+    int i;
+    //para o cliente digitar a sua senha
+    for (i = 0; i < num_clientes; i++) {
+        if (strcmp(clientes[i].cpf, cpf) == 0)
+        printf("senha: ");
+        scanf("%s", senha);
+
+        //quando o cliente digitar a senha e o cpf, ira aparecer o extrato do cliente
+        if (strcmp(&clientes[i].senha, &senha) == 0) {
+            printf("extrato do cliente: \n");
+            printf("Nome: %s\n", clientes[i].nome);
+            printf("CPF: %s\n", clientes[i].cpf);
+            printf("tipo de conta: %s\n", clientes[i].tipo_de_conta);
+            printf("saldo atual: %.2f\n", clientes[i].saldo);
+            //print para mostrar as operacoes realizadas
+            printf("operacoes realizadas: \n");
+            for ( int j = 0; j < num_operacoes; j++) {
+                if (strcmp(operacoes[j].cpf, cpf) == 0){
+                    printf("tipo: %s e valor: %.2f\n", operacoes[j].tipo_de_operacao, operacoes[j].valor);
+                }
+            }
+            return;
+        } else {
+            //caso erre a senha
+            printf("senha errada\n");
+            return;
+        }
+    }
+    //caso o cliente nao exista ou errou o cpf
+    printf("cliente nao encontrado\n", cpf);
+}
